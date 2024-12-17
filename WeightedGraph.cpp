@@ -11,6 +11,8 @@
 #include <unordered_map>
 #include <utility>
 #include <algorithm>
+#include <limits>
+
 
 //=========================================================
 // Default constructor for the WeightedGraph class
@@ -184,7 +186,7 @@ unordered_map<double, pair<double, double>> WeightedGraph::Dijkstra(double sourc
     // Set the parent to NIL
     for (const pair<double, vector<pair<double, double>>> pair : adjList)
     {
-        result[pair.first] = {INFINITY, -1};
+        result[pair.first] = {numeric_limits<double>::infinity(), -1};
     }
 
     // Set the distance from the source to itself to 0

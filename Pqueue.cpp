@@ -9,7 +9,8 @@ using namespace std;
 // Parameters: const Pqueue& other
 // RETURN: Creates a copy of the provided Pqueue object
 //=============================
-Pqueue::Pqueue(const Pqueue& other) {
+Pqueue::Pqueue(const Pqueue &other)
+{
     heap = other.heap;
 }
 
@@ -18,8 +19,10 @@ Pqueue::Pqueue(const Pqueue& other) {
 // Parameters: const Pqueue& other
 // RETURN: Reference to the current Pqueue object after assignment
 //=============================
-Pqueue& Pqueue::operator=(const Pqueue& other) {
-    if (this != &other) {
+Pqueue &Pqueue::operator=(const Pqueue &other)
+{
+    if (this != &other)
+    {
         heap = other.heap;
     }
     return *this;
@@ -31,10 +34,14 @@ Pqueue& Pqueue::operator=(const Pqueue& other) {
 // RETURN: The minimum value in the heap (double)
 // Throws an exception if the heap is empty
 //=============================
-double Pqueue::viewMin() {
-    if (heap.size() < 1) {
+double Pqueue::viewMin()
+{
+    if (heap.size() < 1)
+    {
         throw ElementException("Heap Underflow");
-    } else {
+    }
+    else
+    {
         return heap[0].first;
     }
 }
@@ -44,7 +51,8 @@ double Pqueue::viewMin() {
 // Parameters: double value - the value to insert, double key - the priority of the value
 // RETURN: Adds a new element to the heap and maintains heap order
 //=============================
-void Pqueue::insert(double value, double key) {
+void Pqueue::insert(double value, double key)
+{
     pair new_element = make_pair(value, key);
     heap.push_back(new_element);
     heapifyInsert(heap.size() - 1);
@@ -56,8 +64,10 @@ void Pqueue::insert(double value, double key) {
 // RETURN: The minimum value in the heap (double) and removes it
 // Throws an exception if the heap is empty
 //=============================
-double Pqueue::extract_min() {
-    if (heap.size() < 1) {
+double Pqueue::extract_min()
+{
+    if (heap.size() < 1)
+    {
         throw ElementException("Heap Underflow");
     }
     double min = heap[0].first;
@@ -74,32 +84,41 @@ double Pqueue::extract_min() {
 // RETURN: Updates the key of the specified value and maintains heap order
 // Throws exceptions if the value is not found or the target key is bigger
 //=============================
-void Pqueue::decrease_key(double value, double target) {
-    auto it = find(heap.begin(), heap.end(), value);
-    if (it == heap.end()) {
+void Pqueue::decrease_key(double value, double target)
+{
+    int index = -1;
+    for (int i = 0; i < heap.size(); i++)
+    {
+        if (heap[i].first == value)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+    {
         throw ElementException("Value does not exist in heap");
     }
 
-    double i = distance(heap.begin(), it);
-    if (heap[i].second < target) {
+    if (heap[index].second < target)
+    {
         throw KeyException("Target key is larger than current key");
     }
 
-    heap[i].second = target;
-    if (i > 0) {    // Don't need to heapify up for top elements
-        heapifyInsert(i);
+    heap[index].second = target;
+    if (index > 0)
+    { 
+        // Don't need to heapify up for top elements
+        heapifyInsert(index);
     }
 }
-
 
 //=============================
 // This function checks if the pq is empty
 // Parameters: None
 // RETURN: bool
 //=============================
-bool  Pqueue::isEmpty() {
+bool Pqueue::isEmpty()
+{
     return heap.empty();
 }
-
-
-

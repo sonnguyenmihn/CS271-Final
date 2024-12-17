@@ -1,22 +1,73 @@
 #ifndef CUSTOMEXCEPTIONS_HPP
 #define CUSTOMEXCEPTIONS_HPP
 
-#include <stdexcept>
-#include <string>
+#include <exception>
+#include <iostream>
 
+using namespace std;
 
-class KeyException : public std::runtime_error {
+class edge_exception : public exception {
+private:
+    const char* message;
 public:
-    explicit KeyException(const std::string& message)
-        : std::runtime_error("KeyException: " + message) {}
+    // Constructor
+    edge_exception(const char* msg) {
+        message = msg;
+    }
+
+    // Override the what() method
+    const char* what() const noexcept {
+        return message;
+    }
 };
 
-class ElementException : public std::runtime_error {
+
+class vertex_exception : public exception {
+private:
+    const char* message;
 public:
-    explicit ElementException(const std::string& message)
-        : std::runtime_error("ElementException: " + message) {}
+    // Constructor
+    vertex_exception(const char* msg) {
+        message = msg;
+    }
+
+    // Override the what() method
+    const char* what() const noexcept {
+        return message;
+    }
 };
 
+
+class ElementException : public exception {
+private:
+    const char* message;
+public:
+    // Constructor
+    ElementException(const char* msg) {
+        message = msg;
+    }
+
+    // Override the what() method
+    const char* what() const noexcept {
+        return message;
+    }
+};
+
+
+class KeyException : public exception {
+private:
+    const char* message;
+public:
+    // Constructor
+    KeyException(const char* msg) {
+        message = msg;
+    }
+
+    // Override the what() method
+    const char* what() const noexcept {
+        return message;
+    }
+};
 
 
 #endif

@@ -1,3 +1,9 @@
+//=========================================================
+// Pqueue.hpp
+// Son, Damian, Hoa
+// Dec, 2024
+// This is the header file with definitions of functions for the (min)Pqueue class.
+//=========================================================
 #ifndef PQUEUE_HPP
 #define PQUEUE_HPP
 #include <utility>
@@ -9,7 +15,7 @@ using namespace std;
 class Pqueue { 
 private: 
     // Underlying heap structure to implement the priority queue
-    vector<pair<double, double>> heap;
+    vector<pair<size_t, double>> heap;
 
     //=============================
     // parent
@@ -80,10 +86,10 @@ public:
     Pqueue(const Pqueue &other);
     Pqueue &operator=(const Pqueue &other);
     ~Pqueue() = default;
-    double viewMin();
-    void insert(double value, double key);
-    double extract_min();
-    void decrease_key(double value, double target);
+    size_t viewMin();
+    void insert(size_t value, double key);
+    size_t extract_min();
+    void decrease_key(size_t value, double target);
     bool isEmpty();
 };
 

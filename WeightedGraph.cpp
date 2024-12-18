@@ -13,7 +13,6 @@
 #include <algorithm>
 #include <limits>
 
-
 //=========================================================
 // Default constructor for the WeightedGraph class
 // Initializes an empty graph.
@@ -67,8 +66,12 @@ WeightedGraph &WeightedGraph::operator=(const WeightedGraph &copy)
 //   - w: weight
 // Returns: None
 //=========================================================
-void WeightedGraph::addEdge(double u, double v, double w)
+void WeightedGraph::addEdge(size_t u, size_t v, double w)
 {
+    if (adjList.find(u) == adjList.end() || adjList.find(v) == adjList.end())
+    {
+        throw vertex_exception("One or both vertices do not exist.");
+    }
     if (edgeIn(u, v))
     {
         return;
@@ -88,7 +91,7 @@ void WeightedGraph::addEdge(double u, double v, double w)
 //   - v: destination vertex.
 // Returns: None
 //=========================================================
-void WeightedGraph::removeEdge(double u, double v)
+void WeightedGraph::removeEdge(size_t u, size_t v)
 {
     if (edgeIn(u, v))
     {
@@ -111,11 +114,11 @@ void WeightedGraph::removeEdge(double u, double v)
 //   - v: destination vertex.
 // Returns: True if the edge exists, false otherwise.
 //=========================================================
-bool WeightedGraph::edgeIn(double u, double v)
+bool WeightedGraph::edgeIn(size_t u, size_t v)
 {
     if (adjList.find(u) != adjList.end())
     {
-        for (pair<double, double> value : adjList[u])
+        for (pair<size_t, double> value : adjList[u])
         {
             if (value.first == v)
             {
@@ -132,7 +135,7 @@ bool WeightedGraph::edgeIn(double u, double v)
 //   - u: the vertex to delete.
 // Returns: None
 //=========================================================
-void WeightedGraph::deleteVertex(double u)
+void WeightedGraph::deleteVertex(size_t u)
 {
     if (adjList.find(u) == adjList.end())
     {
@@ -141,7 +144,7 @@ void WeightedGraph::deleteVertex(double u)
 
     adjList.erase(u);
 
-    for (const pair<double, vector<pair<double, double>>> pair : adjList)
+    for (const pair<size_t, vector<pair<size_t, double>>> pair : adjList)
     {
         if (edgeIn(pair.first, u))
         {
@@ -157,13 +160,13 @@ void WeightedGraph::deleteVertex(double u)
 //   - u: the vertex to add.
 // Returns: None
 //=========================================================
-void WeightedGraph::addVertex(double u)
+void WeightedGraph::addVertex(size_t u)
 {
     if (adjList.find(u) != adjList.end())
     {
         throw vertex_exception("this vertex is already existed");
     }
-    adjList.insert({u, vector<pair<double, double>>()});
+    adjList.insert({u, vector<pair<size_t, double>>()});
 }
 
 //=========================================================
@@ -178,13 +181,18 @@ void WeightedGraph::addVertex(double u)
 //       - The shortest distance from the source vertex.
 //       - The parent vertex on the shortest path.
 //=========================================================
-unordered_map<double, pair<double, double>> WeightedGraph::Dijkstra(double source)
+unordered_map<size_t, pair<double, size_t>> WeightedGraph::Dijkstra(size_t source)
 {
-    unordered_map<double, pair<double, double>> result;
+    // Check if the source vertex exists
+    if (adjList.find(source) == adjList.end())
+    {
+        throw vertex_exception("Source vertex does not exist.");
+    }
+    unordered_map<size_t, pair<double, size_t>> result;
 
     // Set the distance from the source vertex to every vertex to INF
     // Set the parent to NIL
-    for (const pair<double, vector<pair<double, double>>> pair : adjList)
+    for (const pair<size_t, vector<pair<size_t, double>>> pair : adjList)
     {
         result[pair.first] = {numeric_limits<double>::infinity(), -1};
     }
@@ -195,7 +203,7 @@ unordered_map<double, pair<double, double>> WeightedGraph::Dijkstra(double sourc
     Pqueue pq;
 
     // Insert all vertices into the priority queue with their initial distances.
-    for (const pair<double, pair<double, double>> pair : result)
+    for (const pair<size_t, pair<double, size_t>> pair : result)
     {
         pq.insert(pair.first, pair.second.first);
     }
@@ -203,13 +211,13 @@ unordered_map<double, pair<double, double>> WeightedGraph::Dijkstra(double sourc
     while (!pq.isEmpty())
     {
         // Extract the vertex `u` with the smallest distance.
-        double u = pq.extract_min();
+        size_t u = pq.extract_min();
         double distanceFromStoU = result[u].first;
 
         // Relax all edges (u, v) where `v` is a neighbor of `u`.
         for (const auto &neighbor : adjList[u])
         {
-            double v = neighbor.first;
+            size_t v = neighbor.first;
             double weight = neighbor.second;
             if (result[v].first > distanceFromStoU + weight)
             {
@@ -221,4 +229,16 @@ unordered_map<double, pair<double, double>> WeightedGraph::Dijkstra(double sourc
     }
 
     return result;
+}
+
+double WeightedGraph::getWeight(size_t u, size_t v)
+{
+    for (int i = 0; i < adjList[u].size(); i++)
+    {
+        if (adjList[u][i].first == v)
+        {
+            return adjList[u][i].second;
+        };
+    };
+    return -1;
 }

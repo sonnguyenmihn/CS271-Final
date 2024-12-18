@@ -27,17 +27,18 @@ public:
     WeightedGraph &operator=(const WeightedGraph &copy);
 
     // Function Prototypes
-    void addEdge(double u, double v, double w);
-    void removeEdge(double u, double v);
-    bool edgeIn(double u, double v);
-    void deleteVertex(double u);
-    void addVertex(double u);
+    void addEdge(size_t u, size_t v, double w);
+    void removeEdge(size_t u, size_t v);
+    bool edgeIn(size_t u, size_t v);
+    void deleteVertex(size_t u);
+    void addVertex(size_t u);
     // static WeightedGraph readFromSTDIN();
-    unordered_map<double, pair<double, double>> Dijkstra(double source);
+    unordered_map<size_t, pair<double, size_t>> Dijkstra(size_t source);
+    double getWeight(size_t u, size_t v);
 
 
 private:
-    unordered_map<double, vector<pair<double, double>>> adjList;
+    unordered_map<size_t, vector<pair<size_t, double>>> adjList;
 };
 
 #endif

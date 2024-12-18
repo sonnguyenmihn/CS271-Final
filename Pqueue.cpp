@@ -1,3 +1,9 @@
+//=========================================================
+// Pqueue.hpp
+// Son, Damian, Hoa
+// Dec, 2024
+// This is the implementation file (min) Pqueue class.
+//=========================================================
 #include "Pqueue.hpp"
 #include <algorithm>
 #include <utility>
@@ -31,10 +37,10 @@ Pqueue &Pqueue::operator=(const Pqueue &other)
 //=============================
 // Pqueue::viewMin
 // Parameters: None
-// RETURN: The minimum value in the heap (double)
+// RETURN: The minimum value in the heap (size_t)
 // Throws an exception if the heap is empty
 //=============================
-double Pqueue::viewMin()
+size_t Pqueue::viewMin()
 {
     if (heap.size() < 1)
     {
@@ -48,10 +54,10 @@ double Pqueue::viewMin()
 
 //=============================
 // Pqueue::insert
-// Parameters: double value - the value to insert, double key - the priority of the value
+// Parameters: size_t value - the value to insert, size_t key - the priority of the value
 // RETURN: Adds a new element to the heap and maintains heap order
 //=============================
-void Pqueue::insert(double value, double key)
+void Pqueue::insert(size_t value, double key)
 {
     pair new_element = make_pair(value, key);
     heap.push_back(new_element);
@@ -61,16 +67,16 @@ void Pqueue::insert(double value, double key)
 //=============================
 // Pqueue::extract_min
 // Parameters: None
-// RETURN: The minimum value in the heap (double) and removes it
+// RETURN: The minimum value in the heap (size_t) and removes it
 // Throws an exception if the heap is empty
 //=============================
-double Pqueue::extract_min()
+size_t Pqueue::extract_min()
 {
     if (heap.size() < 1)
     {
         throw ElementException("Heap Underflow");
     }
-    double min = heap[0].first;
+    size_t min = heap[0].first;
     swap(heap[0], heap[heap.size() - 1]);
     heap.pop_back();
     minHeapify(0);
@@ -79,12 +85,12 @@ double Pqueue::extract_min()
 
 //=============================
 // Pqueue::decrease_key
-// Parameters: double value - the value whose key to decrease,
-//             double target - the new (smaller) key value
+// Parameters: size_t value - the value whose key to decrease,
+//             size_t target - the new (smaller) key value
 // RETURN: Updates the key of the specified value and maintains heap order
 // Throws exceptions if the value is not found or the target key is bigger
 //=============================
-void Pqueue::decrease_key(double value, double target)
+void Pqueue::decrease_key(size_t value, double target)
 {
     int index = -1;
     for (int i = 0; i < heap.size(); i++)

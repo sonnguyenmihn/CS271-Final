@@ -22,6 +22,12 @@ public:
     // This function ask for a input file, read the graph in the file to the `graph` variable
     bool getGraph()
     {
+        // Clear the current graph
+        coordinatesToID.clear();
+        IDToCoordinates.clear();
+        edgeNames.clear();
+        graph = WeightedGraph();
+
         // File input
         string filename;
         ifstream file;
@@ -114,7 +120,7 @@ public:
                 {
                     return;
                 }
-                startX = stoul(tmp); // convert string to size_t
+                startX = stod(tmp); // convert string to double
 
                 cin >> startY;
 
@@ -142,18 +148,18 @@ public:
                 {
                     return;
                 }
-                endX = stoul(tmp);
+                endX = stod(tmp);
                 cin >> endY;
                 combinedEndCoordinate = to_string(endX) + ", " + to_string(endY);
 
                 // Check if the vertex exists in the graph
-                if (coordinatesToID.find(combinedStartCoordinate) != coordinatesToID.end())
+                if (coordinatesToID.find(combinedEndCoordinate) != coordinatesToID.end())
                 {
                     found2 = true;
                 }
                 else
                 {
-                    cout << "Invalid: There is no coordinates " << startX << ", " << startY << " in the map" << endl;
+                    cout << "Invalid: There is no coordinates " << endX << ", " << endY << " in the map" << endl;
                 }
             }
 
